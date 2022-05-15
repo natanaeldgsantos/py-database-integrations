@@ -71,15 +71,17 @@ def data_upload():
 
     for file_name in os.listdir(DATA_DIR):
 
-        # Padroniza nome da tabela
-        table_name = padroniza_tabela(file_name)
+        if file_name.endswith('.csv'):
+            
+            # Padroniza nome da tabela
+            table_name = padroniza_tabela(file_name)
 
-        # Gera o Dataframe        
-        df_tmp = pd.read_csv(os.path.join(DATA_DIR,file_name))
-        df_tmp['upload_datetime'] = datetime.now().isoformat()
-      
-        # Cria e carrega tabela
-        df_tmp.to_sql(name=table_name, con= connection ,if_exists='replace')
+            # Gera o Dataframe        
+            df_tmp = pd.read_csv(os.path.join(DATA_DIR,file_name))
+            df_tmp['upload_datetime'] = datetime.now().isoformat()
+        
+            # Cria e carrega tabela
+            df_tmp.to_sql(name=table_name, con= connection ,if_exists='replace')
 
     print('Carga de Dados executada com Sucesso')
 
